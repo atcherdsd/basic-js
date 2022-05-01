@@ -19,14 +19,56 @@ const { NotImplementedError } = require('../extensions/index.js');
  * reverseMachine.decrypt('AEIHQX SX DLLU!', 'alphonse') => '!NWAD TA KCATTA'
  * 
  */
-class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+ class VigenereCipheringMachine {
+  constructor(boolean = true) {
+    this.type = boolean;
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+  encrypt(str, key) {
+    if (!str || !key) 
+      throw new Error('Incorrect arguments!');
+      
+    let cipStr = '';
+    let correctStr = str.toUpperCase();
+    key = key.repeat(Math.ceil(str.length / key.length)).toUpperCase();
+
+    for (let i = 0, k = 0; i < correctStr.length; i++, k++) {
+      if (correctStr[i].charCodeAt() == 32) k--;
+      
+      if (correctStr[i].charCodeAt() < 65 || correctStr[i].charCodeAt() > 90)
+        cipStr += correctStr[i];
+      else {
+        let coefficient = correctStr.charCodeAt(i) - 65;
+        let stepRelativeStrChar = key.charCodeAt(k) - 65;
+        cipStr += String.fromCharCode(65 + (coefficient + stepRelativeStrChar) % 26);
+      }
+    }
+    if (this.type) 
+      return cipStr;
+    return Array.from(cipStr).reverse().join('');
+  }
+  decrypt(str, key) {
+    if (!str || !key) 
+      throw new Error('Incorrect arguments!');
+
+    let cipStr = '';
+    let correctStr = str.toUpperCase();
+    key = key.repeat(Math.ceil(str.length / key.length)).toUpperCase();
+
+    for (let i = 0, k = 0; i < correctStr.length; i++, k++) {
+      if (correctStr[i].charCodeAt() == 32) k--;
+
+      if (correctStr[i].charCodeAt() < 65 || correctStr[i].charCodeAt() > 90) 
+        cipStr += correctStr[i];
+      else {
+        let coefficient = correctStr.charCodeAt(i) - 65;
+        let stepRelativeStrChar = key.charCodeAt(k) - 65;
+        cipStr += String.fromCharCode(65 + (coefficient - stepRelativeStrChar + 26) % 26);
+      }
+    }
+    if (this.type) 
+      return cipStr;
+    return Array.from(cipStr).reverse().join('');
   }
 }
 
