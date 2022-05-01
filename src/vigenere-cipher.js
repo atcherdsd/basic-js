@@ -24,13 +24,13 @@ const { NotImplementedError } = require('../extensions/index.js');
     this.type = boolean;
   }
 
-  encrypt(str, key) {
-    if (!str || !key) 
+  encrypt(message, key) {
+    if (!message || !key) 
       throw new Error('Incorrect arguments!');
       
     let cipStr = '';
-    let correctStr = str.toUpperCase();
-    key = key.repeat(Math.ceil(str.length / key.length)).toUpperCase();
+    let correctStr = message.toUpperCase();
+    key = key.repeat(Math.ceil(message.length / key.length)).toUpperCase();
 
     for (let i = 0, k = 0; i < correctStr.length; i++, k++) {
       if (correctStr[i].charCodeAt() == 32) k--;
@@ -47,13 +47,13 @@ const { NotImplementedError } = require('../extensions/index.js');
       return cipStr;
     return Array.from(cipStr).reverse().join('');
   }
-  decrypt(str, key) {
-    if (!str || !key) 
+  decrypt(message, key) {
+    if (!message || !key) 
       throw new Error('Incorrect arguments!');
 
     let cipStr = '';
-    let correctStr = str.toUpperCase();
-    key = key.repeat(Math.ceil(str.length / key.length)).toUpperCase();
+    let correctStr = message.toUpperCase();
+    key = key.repeat(Math.ceil(message.length / key.length)).toUpperCase();
 
     for (let i = 0, k = 0; i < correctStr.length; i++, k++) {
       if (correctStr[i].charCodeAt() == 32) k--;
